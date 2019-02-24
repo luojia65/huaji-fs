@@ -1,0 +1,25 @@
+WHITESPACE = _{ " " | "\t" }
+quoted_string = ${ "\"" ~ inner ~ "\"" }
+raw_string = { filtered_char+ }
+inner = @{ char* }
+char = _{
+    !("\"" | "\\") ~ ANY
+    | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+    | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
+}
+filtered_char = _{ !(WHITESPACE | "\"") ~ ANY }
+string = _{ quoted_string | raw_string }
+
+file_name = { string }
+cmd_touch_head = { ^"touch" }
+cmd_touch = _{ cmd_touch_head ~ file_name }
+cmd_mkdir_head = { ^"mkdir" }
+cmd_mkdir = _{ cmd_mkdir_head ~ file_name }
+cmd_cd_head = { ^"cd" }
+cmd_cd = _{ cmd_cd_head ~ file_name }
+cmd_ls_head = { ^"ls" }
+cmd_ls = _{ cmd_ls_head }
+cmd_exit_head = { ^"exit" }
+cmd_exit = _{ cmd_exit_head }
+
+command = _{ SOI ~ (cmd_touch | cmd_ls | cmd_mkdir | cmd_cd | cmd_exit)? ~ EOI }
