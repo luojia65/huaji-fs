@@ -104,7 +104,12 @@ fn contains_dir<P: AsRef<Path>>(path: P) -> bool {
     if path.components().collect::<Vec<_>>() == vec![RootDir] {
         return true;
     }
-    FILES.lock().unwrap().contains_key(&PathBuf::from(path))
+    if let Some(slot) = FILES.lock().unwrap().get(&PathBuf::from(path)) {
+        if let FileSlot::Directory = &*slot.read().unwrap() {
+            return true;
+        }
+    }
+    false
 }
 
 fn path_to_string<P: AsRef<Path>>(path: P) -> String {
