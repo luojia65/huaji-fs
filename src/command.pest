@@ -19,7 +19,9 @@ cmd_cd_head = { ^"cd" }
 cmd_cd = _{ cmd_cd_head ~ file_name }
 cmd_ls_head = { ^"ls" }
 cmd_ls = _{ cmd_ls_head }
+cmd_huaji_head = { ^"huaji" }
+cmd_huaji = _{ cmd_huaji_head }
 cmd_exit_head = { ^"exit" }
 cmd_exit = _{ cmd_exit_head }
 
-command = _{ SOI ~ (cmd_touch | cmd_ls | cmd_mkdir | cmd_cd | cmd_exit)? ~ EOI }
+command = _{ SOI ~ (cmd_touch | cmd_ls | cmd_mkdir | cmd_cd | cmd_huaji | cmd_exit)? ~ EOI }

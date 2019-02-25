@@ -172,6 +172,15 @@ fn main() {
                         println!("cd: No such directory")
                     }
                 },
+                Some(Rule::cmd_huaji_head) => {
+                    println!("Huaji");
+                    let manager = battery::Manager::new();
+                    for battery in manager.iter() {
+                        println!("Vendor: {}", battery.vendor().unwrap_or("unknown"));
+                        println!("Percentage: {} %", battery.percentage());
+                        println!("Capacity: {:.2} %", battery.capacity());
+                    }
+                },
                 Some(Rule::cmd_exit_head) => {
                     println!("logout");
                     return;
